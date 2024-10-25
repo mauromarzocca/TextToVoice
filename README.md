@@ -5,6 +5,8 @@
 - [TextToVoice](#texttovoice)
   - [Descrizione](#descrizione)
   - [Requisiti](#requisiti)
+  - [Descrizione delle Funzioni](#descrizione-delle-funzioni)
+  - [Esecuzione](#esecuzione)
 
 ---
 
@@ -34,5 +36,28 @@ Per installare le dipendenze, esegui il comando:
 ```sh
 
 pip install -r requirements.txt
+
+```
+
+## Descrizione delle Funzioni
+
+1. gTTS: Viene utilizzato per creare un file audio a partire da una stringa di testo.
+
+   - text: testo da convertire in audio.
+   - lang: codice della lingua (it per l’italiano).
+   - slow: se impostato su True, rallenta la velocità dell’audio generato.
+
+2. playsound: Riproduce il file audio generato. Gestisce anche eventuali eccezioni.
+
+## Esecuzione
+
+Per eseguire il codice:
+
+1. Assicurati di aver installato tutte le dipendenze con pip install -r requirements.txt.
+2. Avvia lo script Python:
+
+```sh
+
+python nome_script.py
 
 ```
