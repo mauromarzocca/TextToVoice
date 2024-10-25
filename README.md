@@ -67,7 +67,7 @@ Per eseguire il codice:
 2. Avvia lo script Python:
 
 ```sh
-python nome_script.py
+python texttovoice.py
 ```
 
 Al termine dell’esecuzione, sentirai l’audio generato con il messaggio all'interno del codice.
