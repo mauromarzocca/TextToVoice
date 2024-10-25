@@ -1,5 +1,13 @@
 # TextToVoice
 
+---
+
+- [TextToVoice](#texttovoice)
+  - [Descrizione](#descrizione)
+  - [Requisiti](#requisiti)
+
+---
+
 ## Descrizione
 
 Questo progetto consente di generare e riprodurre file audio in italiano utilizzando le librerie gTTS e playsound. Viene utilizzato Google Text-to-Speech (gTTS) per convertire un testo in un file audio, che successivamente viene riprodotto utilizzando playsound. Questo progetto è compatibile con sistemi macOS, Windows e Linux (con qualche accorgimento).
