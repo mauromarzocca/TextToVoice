@@ -7,6 +7,7 @@
   - [Requisiti](#requisiti)
   - [Descrizione delle Funzioni](#descrizione-delle-funzioni)
   - [Esecuzione](#esecuzione)
+  - [Note](#note)
 
 ---
 
@@ -61,3 +62,10 @@ Per eseguire il codice:
 python nome_script.py
 
 ```
+
+Al termine dell’esecuzione, sentirai l’audio generato con il messaggio all'interno del codice.
+
+## Note
+
+Su alcuni sistemi operativi, playsound può presentare problemi. 
+In questo caso, potresti sostituirlo con una libreria come pydub, che richiede però l’installazione aggiuntiva di ffmpeg.
