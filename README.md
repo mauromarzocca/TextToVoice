@@ -50,6 +50,16 @@ pip install -r requirements.txt
 
 2. playsound: Riproduce il file audio generato. Gestisce anche eventuali eccezioni.
 
+3. datetime.now() : Ottiene la data e l’orario corrente.
+    - Il formato "%Y%m%d-%H%M%S" crea una stringa come 20241025-193024, dove:
+    - %Y è l’anno con quattro cifre (es. 2024),
+    - %m è il mese con due cifre,
+    - %d è il giorno con due cifre,
+    - %H è l’ora in formato 24 ore,
+    - %M sono i minuti e %S i secondi.
+
+    In questo modo il file verrà salvato come audio_<data corrente>-<orario corrente>.mp3.
+
 ## Esecuzione
 
 Per eseguire il codice:
@@ -67,5 +77,5 @@ Al termine dell’esecuzione, sentirai l’audio generato con il messaggio all'i
 
 ## Note
 
-Su alcuni sistemi operativi, playsound può presentare problemi. 
+Su alcuni sistemi operativi, playsound può presentare problemi.
 In questo caso, potresti sostituirlo con una libreria come pydub, che richiede però l’installazione aggiuntiva di ffmpeg.
