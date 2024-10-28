@@ -11,6 +11,8 @@
 
 ---
 
+![logo](logo.png)
+
 ## Descrizione
 
 Questo progetto consente di generare e riprodurre file audio in italiano utilizzando le librerie gTTS e playsound.
