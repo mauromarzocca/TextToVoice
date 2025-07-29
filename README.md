@@ -7,7 +7,7 @@ Versione 2.0
 - [TextToVoice](#texttovoice)
   - [Descrizione](#descrizione)
   - [Requisiti](#requisiti)
-    - [MacOS](#macos)
+    - [macOS](#macos)
     - [Ubuntu/Debian](#ubuntudebian)
   - [Descrizione delle Funzioni](#descrizione-delle-funzioni)
   - [Esecuzione](#esecuzione)
@@ -19,9 +19,16 @@ Versione 2.0
 
 ## Descrizione
 
-Questo progetto consente di generare e riprodurre file audio in italiano utilizzando le librerie gTTS e playsound.
-Viene utilizzato Google Text-to-Speech (gTTS) per convertire un testo in un file audio, che successivamente viene riprodotto utilizzando playsound.
-Questo progetto è compatibile con sistemi macOS, Windows e Linux (con qualche accorgimento).
+Questo progetto consente di generare file audio da testo scritto o da file PDF, utilizzando le librerie `gTTS` e `pydub`. Il testo può essere scritto manualmente o importato da un file PDF tramite l’interfaccia grafica.  
+Il progetto è compatibile con sistemi macOS, Windows e Linux.
+
+Le funzionalità principali includono:
+
+- Estrazione del testo da file PDF
+- Scelta della lingua di sintesi vocale
+- Suddivisione automatica del testo in blocchi se troppo lungo
+- Generazione e salvataggio del file audio `.mp3`
+- Interfaccia utente con barra di avanzamento
 
 ## Requisiti
 
@@ -45,9 +52,9 @@ Per installare le dipendenze, esegui il comando:
 pip install -r requirements.txt
 ```
 
-Infine occorre installare ffmpeg, un software necessario per la conversione del file audio in un formato compatibile con playsound.
+Inoltre è necessario installare `ffmpeg`, richiesto da `pydub` per elaborare i file audio.
 
-### MacOS
+### macOS
 
 ```sh
 brew install ffmpeg
@@ -61,38 +68,42 @@ sudo apt install ffmpeg
 
 ## Descrizione delle Funzioni
 
-1. gTTS: Viene utilizzato per creare un file audio a partire da una stringa di testo.
+1. **gTTS**: Viene utilizzato per creare un file audio a partire da una stringa di testo.
+   - `text`: testo da convertire in audio.
+   - `lang`: codice della lingua (es. `it` per l’italiano).
+   - `slow`: se impostato su `True`, rallenta la velocità dell’audio generato.
 
-   - text: testo da convertire in audio.
-   - lang: codice della lingua (it per l’italiano).
-   - slow: se impostato su True, rallenta la velocità dell’audio generato.
+2. **pydub**: Unisce più file audio `.mp3` generati in un unico file finale.
 
-2. playsound: Riproduce il file audio generato. Gestisce anche eventuali eccezioni.
+3. **fitz (PyMuPDF)**: Permette di estrarre il testo dalle pagine di un file PDF.
 
-3. datetime.now() : Ottiene la data e l’orario corrente.
-    - Il formato "%Y%m%d-%H%M%S" crea una stringa come 20241025-193024, dove:
-    - %Y è l’anno con quattro cifre (es. 2024),
-    - %m è il mese con due cifre,
-    - %d è il giorno con due cifre,
-    - %H è l’ora in formato 24 ore,
-    - %M sono i minuti e %S i secondi.
+4. **tkinter**: Crea l’interfaccia grafica per selezionare PDF, scrivere testo, scegliere la lingua e avviare la conversione.
 
-    In questo modo il file verrà salvato come audio_[data corrente]-[orario corrente].mp3.
+5. **threading**: Permette la generazione dell’audio senza bloccare l’interfaccia.
 
 ## Esecuzione
 
-Per eseguire il codice:
+Per eseguire il progetto:
 
-1. Assicurati di aver installato tutte le dipendenze con pip install -r requirements.txt.
-2. Avvia lo script Python:
+1. Installa le dipendenze:
 
 ```sh
-python texttovoice.py
+pip install -r requirements.txt
 ```
 
-Al termine dell’esecuzione, sentirai l’audio generato con il messaggio all'interno del codice.
+2. Avvia lo script principale:
+
+  ```sh
+  python texttovoice.py
+  ```
+
+3. Usa l’interfaccia per:
+   - Caricare un file PDF oppure scrivere del testo
+   - Scegliere la lingua
+   - Salvare il file audio in una posizione a tua scelta
 
 ## Note
 
-Su alcuni sistemi operativi, playsound può presentare problemi.
-In questo caso, potresti sostituirlo con una libreria come pydub, che richiede l’installazione aggiuntiva di ffmpeg.
+- `playsound` e `PyObjC` **non sono più necessari**.
+- È possibile salvare il file audio con un nome e in una cartella a tua scelta.
+- L'audio viene riprodotto automaticamente al termine se supportato dal sistema operativo.
