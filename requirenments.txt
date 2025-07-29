@@ -1,3 +1,4 @@
 gTTS
 pydub
 PyMuPDF
+pyttsx3
