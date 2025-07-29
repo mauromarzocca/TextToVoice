@@ -3,12 +3,13 @@ from tkinter import filedialog, messagebox
 from tkinter.scrolledtext import ScrolledText
 from tkinter import ttk
 from gtts import gTTS
+import pyttsx3
 import fitz  # PyMuPDF
 from pydub import AudioSegment
 import os
 import threading
 
-# Lingue disponibili
+# Lingue disponibili (per gTTS)
 LANGUAGES = {
     "Italiano": "it",
     "Inglese": "en",
@@ -55,12 +56,9 @@ def converti_audio():
     if not testo:
         messagebox.showwarning("Attenzione", "Inserisci del testo o carica un PDF.")
         return
-    lingua = LANGUAGES.get(opzione_lingua.get())
-    if not lingua:
-        messagebox.showerror("Errore", "Seleziona una lingua.")
-        return
+    lingua = LANGUAGES.get(opzione_lingua.get(), "it")
+    motore = opzione_motore.get()
 
-    # Selezione file di destinazione
     file_path = filedialog.asksaveasfilename(
         defaultextension=".mp3",
         filetypes=[("File Audio MP3", "*.mp3")],
@@ -74,25 +72,33 @@ def converti_audio():
     try:
         blocchi = spezza_testo(testo)
         num_blocchi = len(blocchi)
-        finale = AudioSegment.empty()
 
         progress_bar["value"] = 0
         progress_bar["maximum"] = num_blocchi
         stato_var.set("Inizio conversione...")
 
-        for i, blocco in enumerate(blocchi):
-            stato_var.set(f"Convertendo blocco {i+1} di {num_blocchi}...")
-            tts = gTTS(text=blocco, lang=lingua)
-            temp_file = f"temp_{i}.mp3"
-            tts.save(temp_file)
-            finale += AudioSegment.from_mp3(temp_file)
-            os.remove(temp_file)
-            progress_bar["value"] = i + 1
-            root.update_idletasks()
+        if motore == "gTTS (online)":
+            finale = AudioSegment.empty()
+            for i, blocco in enumerate(blocchi):
+                stato_var.set(f"gTTS - Blocco {i+1} di {num_blocchi}...")
+                tts = gTTS(text=blocco, lang=lingua)
+                temp_file = f"temp_{i}.mp3"
+                tts.save(temp_file)
+                finale += AudioSegment.from_mp3(temp_file)
+                os.remove(temp_file)
+                progress_bar["value"] = i + 1
+                root.update_idletasks()
+            finale.export(file_path, format="mp3")
+        else:
+            stato_var.set("pyttsx3 - conversione in corso...")
+            engine = pyttsx3.init()
+            engine.setProperty('rate', 150)
+            engine.save_to_file(testo, file_path)
+            engine.runAndWait()
+            progress_bar["value"] = num_blocchi
 
-        finale.export(file_path, format="mp3")
         stato_var.set("Conversione completata!")
-        messagebox.showinfo("Successo", f"File audio salvato:\n{file_path}")
+        messagebox.showinfo("Successo", f"File audio salvato: {file_path}")
         os.system(f"open \"{file_path}\"" if os.name == "posix" else f"start \"{file_path}\"")
 
     except Exception as e:
@@ -101,8 +107,8 @@ def converti_audio():
 
 # UI
 root = tk.Tk()
-root.title("TextToVoice")
-root.geometry("500x670")
+root.title("TextToVoice (Modalità Duale)")
+root.geometry("500x700")
 root.resizable(False, False)
 
 frame = tk.Frame(root, padx=10, pady=10)
@@ -110,26 +116,26 @@ frame.pack(fill="both", expand=True)
 
 tk.Label(frame, text="TextToVoice", font=("Helvetica", 16, "bold")).pack(pady=5)
 
-btn_pdf = tk.Button(frame, text="Carica un file PDF", command=carica_pdf)
-btn_pdf.pack(pady=5)
+tk.Button(frame, text="Carica un file PDF", command=carica_pdf).pack(pady=5)
 
 tk.Label(frame, text="Oppure scrivi qui sotto").pack()
 text_box = ScrolledText(frame, height=15)
 text_box.pack(pady=5, fill="both", expand=True)
 
-tk.Label(frame, text="Scegli la lingua:").pack(pady=5)
+tk.Label(frame, text="Scegli la lingua (solo per gTTS):").pack(pady=5)
 opzione_lingua = tk.StringVar(value="Italiano")
-menu_lingua = tk.OptionMenu(frame, opzione_lingua, *LANGUAGES.keys())
-menu_lingua.pack(pady=5)
+tk.OptionMenu(frame, opzione_lingua, *LANGUAGES.keys()).pack(pady=5)
 
-btn_converti = tk.Button(frame, text="Genera Audio", command=avvia_conversione_thread)
-btn_converti.pack(pady=10)
+tk.Label(frame, text="Scegli il motore vocale:").pack(pady=5)
+opzione_motore = tk.StringVar(value="gTTS (online)")
+tk.OptionMenu(frame, opzione_motore, "gTTS (online)", "pyttsx3 (offline)").pack(pady=5)
+
+tk.Button(frame, text="Genera Audio", command=avvia_conversione_thread).pack(pady=10)
 
 progress_bar = ttk.Progressbar(frame, orient="horizontal", mode="determinate", length=400)
 progress_bar.pack(pady=5)
 
 stato_var = tk.StringVar()
-stato_label = tk.Label(frame, textvariable=stato_var)
-stato_label.pack(pady=2)
+tk.Label(frame, textvariable=stato_var).pack(pady=2)
 
 root.mainloop()
