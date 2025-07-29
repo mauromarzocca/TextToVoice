@@ -1,10 +1,14 @@
 # TextToVoice
 
+Versione 2.0
+
 ---
 
 - [TextToVoice](#texttovoice)
   - [Descrizione](#descrizione)
   - [Requisiti](#requisiti)
+    - [MacOS](#macos)
+    - [Ubuntu/Debian](#ubuntudebian)
   - [Descrizione delle Funzioni](#descrizione-delle-funzioni)
   - [Esecuzione](#esecuzione)
   - [Note](#note)
@@ -21,24 +25,38 @@ Questo progetto è compatibile con sistemi macOS, Windows e Linux (con qualche a
 
 ## Requisiti
 
-Il progetto richiede le seguenti librerie:
+Il progetto richiede le seguenti librerie Python:
 
-- gTTS: per la sintesi vocale (Text-to-Speech).
-- playsound: per riprodurre file audio.
-- PyObjC: libreria necessaria solo su macOS per l’integrazione delle API di sistema.
+- **gTTS**: per la sintesi vocale (Text-to-Speech).
+- **PyMuPDF**: per estrarre testo da file PDF.
+- **pydub**: per unire blocchi vocali in un unico file audio.
 
-Il file requirements.txt include tutte le librerie necessarie:
+Il file `requirements.txt` include tutte le dipendenze Python necessarie:
 
 ```sh
 gTTS
-playsound==1.2.2
-PyObjC
+pydub
+PyMuPDF
 ```
 
 Per installare le dipendenze, esegui il comando:
 
 ```sh
 pip install -r requirements.txt
+```
+
+Infine occorre installare ffmpeg, un software necessario per la conversione del file audio in un formato compatibile con playsound.
+
+### MacOS
+
+```sh
+brew install ffmpeg
+```
+
+### Ubuntu/Debian
+
+```sh
+sudo apt install ffmpeg
 ```
 
 ## Descrizione delle Funzioni
