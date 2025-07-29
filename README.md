@@ -1,6 +1,6 @@
 # TextToVoice
 
-Versione 2.0
+Versione 2.1
 
 ---
 
@@ -44,6 +44,7 @@ Il file `requirements.txt` include tutte le dipendenze Python necessarie:
 gTTS
 pydub
 PyMuPDF
+pyttsx3
 ```
 
 Per installare le dipendenze, esegui il comando:
@@ -72,6 +73,7 @@ sudo apt install ffmpeg
    - `text`: testo da convertire in audio.
    - `lang`: codice della lingua (es. `it` per l’italiano).
    - `slow`: se impostato su `True`, rallenta la velocità dell’audio generato.
+   - `pyttsx3`: Permette di impostare la velocità del linguaggio.
 
 2. **pydub**: Unisce più file audio `.mp3` generati in un unico file finale.
 
