@@ -1,6 +1,6 @@
 # TextToVoice
 
-Versione 2.1
+Versione 2.1 – Modalità Duale (Online + Offline)
 
 ---
 
@@ -10,6 +10,8 @@ Versione 2.1
     - [macOS](#macos)
     - [Ubuntu/Debian](#ubuntudebian)
   - [Descrizione delle Funzioni](#descrizione-delle-funzioni)
+    - [Motori vocali](#motori-vocali)
+    - [Altre funzioni](#altre-funzioni)
   - [Esecuzione](#esecuzione)
   - [Note](#note)
 
@@ -19,41 +21,43 @@ Versione 2.1
 
 ## Descrizione
 
-Questo progetto consente di generare file audio da testo scritto o da file PDF, utilizzando le librerie `gTTS` e `pydub`. Il testo può essere scritto manualmente o importato da un file PDF tramite l’interfaccia grafica.  
-Il progetto è compatibile con sistemi macOS, Windows e Linux.
+TextToVoice è un'applicazione con interfaccia grafica che consente di convertire testo o file PDF in file audio `.mp3`, con la possibilità di scegliere tra:
 
-Le funzionalità principali includono:
+- ✅ **gTTS (Google Text-to-Speech)**: qualità migliore, richiede Internet
+- ✅ **pyttsx3**: completamente offline
 
-- Estrazione del testo da file PDF
-- Scelta della lingua di sintesi vocale
-- Suddivisione automatica del testo in blocchi se troppo lungo
-- Generazione e salvataggio del file audio `.mp3`
-- Interfaccia utente con barra di avanzamento
+Il progetto è compatibile con macOS, Windows e Linux, e include:
+
+- Estrazione testo da PDF
+- Scelta lingua (per gTTS)
+- Barra di avanzamento
+- Salvataggio del file audio dove preferisci
 
 ## Requisiti
 
 Il progetto richiede le seguenti librerie Python:
 
-- **gTTS**: per la sintesi vocale (Text-to-Speech).
-- **PyMuPDF**: per estrarre testo da file PDF.
-- **pydub**: per unire blocchi vocali in un unico file audio.
+- **gTTS**: per la sintesi vocale online
+- **pyttsx3**: per la sintesi vocale offline
+- **PyMuPDF**: per leggere file PDF
+- **pydub**: per unire e gestire file audio `.mp3`
 
-Il file `requirements.txt` include tutte le dipendenze Python necessarie:
+Contenuto del `requirements.txt`:
 
 ```sh
 gTTS
+pyttsx3
 pydub
 PyMuPDF
-pyttsx3
 ```
 
-Per installare le dipendenze, esegui il comando:
+Installa tutte le dipendenze con:
 
 ```sh
 pip install -r requirements.txt
 ```
 
-Inoltre è necessario installare `ffmpeg`, richiesto da `pydub` per elaborare i file audio.
+Inoltre, per il corretto funzionamento di `pydub`, è necessario installare `ffmpeg`:
 
 ### macOS
 
@@ -69,43 +73,48 @@ sudo apt install ffmpeg
 
 ## Descrizione delle Funzioni
 
-1. **gTTS**: Viene utilizzato per creare un file audio a partire da una stringa di testo.
-   - `text`: testo da convertire in audio.
-   - `lang`: codice della lingua (es. `it` per l’italiano).
-   - `slow`: se impostato su `True`, rallenta la velocità dell’audio generato.
-   - `pyttsx3`: Permette di impostare la velocità del linguaggio.
+### Motori vocali
 
-2. **pydub**: Unisce più file audio `.mp3` generati in un unico file finale.
+1. **gTTS (online)**:
+   - Richiede Internet
+   - Voce robotica ma accettabile
+   - Supporta molte lingue
+   - Suddivide automaticamente il testo in blocchi se troppo lungo
 
-3. **fitz (PyMuPDF)**: Permette di estrarre il testo dalle pagine di un file PDF.
+2. **pyttsx3 (offline)**:
+   - Funziona anche senza Internet
+   - Voce dipende dal sistema operativo (su Windows è migliore)
+   - Nessun limite di caratteri
 
-4. **tkinter**: Crea l’interfaccia grafica per selezionare PDF, scrivere testo, scegliere la lingua e avviare la conversione.
+### Altre funzioni
 
-5. **threading**: Permette la generazione dell’audio senza bloccare l’interfaccia.
+- `fitz` (PyMuPDF): estrae testo da PDF caricati
+- `tkinter`: gestisce la UI
+- `threading`: conversione senza bloccare la UI
+- `filedialog`: permette di scegliere dove salvare l'audio
 
 ## Esecuzione
 
-Per eseguire il progetto:
-
 1. Installa le dipendenze:
 
-```sh
-pip install -r requirements.txt
-```
-
-2. Avvia lo script principale:
-
   ```sh
-  python texttovoice.py
+  pip install -r requirements.txt
   ```
 
-3. Usa l’interfaccia per:
-   - Caricare un file PDF oppure scrivere del testo
-   - Scegliere la lingua
-   - Salvare il file audio in una posizione a tua scelta
+2. Avvia lo script:
+
+```sh
+python texttovoice_dualmode.py
+```
+
+3. Usa l'interfaccia per:
+   - Caricare un PDF o scrivere testo
+   - Selezionare la lingua (per gTTS)
+   - Scegliere il motore vocale (online o offline)
+   - Salvare l'audio dove preferisci
 
 ## Note
 
-- `playsound` e `PyObjC` **non sono più necessari**.
-- È possibile salvare il file audio con un nome e in una cartella a tua scelta.
-- L'audio viene riprodotto automaticamente al termine se supportato dal sistema operativo.
+- Il motore `gTTS` richiede connessione Internet.
+- Il motore `pyttsx3` è utile per lettura offline (es. in viaggio).
+- Puoi usare questo strumento per creare audioguide, ascoltare documenti o semplificare letture lunghe.
