@@ -104,7 +104,7 @@ sudo apt install ffmpeg
 2. Avvia lo script:
 
 ```sh
-python texttovoice_dualmode.py
+python texttovoice.py
 ```
 
 3. Usa l'interfaccia per:
